@@ -1,0 +1,20 @@
+{
+  "categories": [
+    "language-support"
+  ],
+  "summary": {
+    "en-US": "Read web pages and PDFs aloud with natural open-source neural voices (Kokoro, MOSS-TTS) that run on your own computer. Needs the free r-aloud local server."
+  },
+  "description": {
+    "en-US": "r-aloud reads web pages, selections and PDFs aloud using open-source neural text-to-speech that runs entirely on your own machine. Nothing is sent to a cloud service.\n\n<b>Important:</b> r-aloud needs its companion TTS server running locally (Linux): https://github.com/AvAkanksh/r-aloud \u2014 run <code>./install.sh --server-only</code>.\n\nFeatures:\n- Read the whole page (main article detected) or just your selection\n- Highlights the sentence being read and follows it\n- PDF reader for local and web PDFs, with selection reading and \"read from here\"\n- Floating mini-player, popup controls, right-click menu, keyboard shortcuts (Alt+Shift+R read/pause, Alt+Shift+X stop)\n- About 50 Kokoro voices in 9 languages; change voice or speed mid-read\n- Optional MOSS-TTS-Realtime engine with voice cloning on a capable GPU\n\nPrivacy: page text goes only to the server on 127.0.0.1. No analytics, no tracking."
+  },
+  "homepage": {
+    "en-US": "https://github.com/AvAkanksh/r-aloud"
+  },
+  "support_url": {
+    "en-US": "https://github.com/AvAkanksh/r-aloud/issues"
+  },
+  "version": {
+    "license": "Apache-2.0"
+  }
+}
