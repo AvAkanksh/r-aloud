@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF reader</title>
+  <link rel="icon" href="../icons/icon-32.png">
+  <link rel="stylesheet" href="viewer.css">
+  <link rel="stylesheet" href="../content/content.css">
+</head>
+<body>
+  <header class="toolbar">
+    <img src="../icons/icon-32.png" width="20" height="20" alt="">
+    <span id="doc-title" class="title">r-aloud PDF reader</span>
+    <span id="page-info" class="page-info"></span>
+    <span class="spacer"></span>
+    <button id="read-here" class="primary" disabled title="Read from the page in view (Alt+Shift+R)">Read from here</button>
+    <button id="read-selection" disabled title="Select text in the PDF first">Read selection</button>
+    <button id="zoom-out" title="Zoom out" aria-label="Zoom out" disabled>−</button>
+    <button id="zoom-in" title="Zoom in" aria-label="Zoom in" disabled>+</button>
+    <label class="open-btn" title="Open a PDF from your computer">Open PDF…
+      <input id="file-input" type="file" accept="application/pdf,.pdf" hidden>
+    </label>
+  </header>
+
+  <main id="pages" aria-label="PDF pages"></main>
+
+  <section id="notice" class="notice" hidden>
+    <h2 id="notice-title"></h2>
+    <p id="notice-text"></p>
+    <div class="notice-actions">
+      <button id="notice-action" class="primary" hidden></button>
+      <label class="open-btn primary-outline">Choose the PDF file…
+        <input id="notice-file" type="file" accept="application/pdf,.pdf" hidden>
+      </label>
+    </div>
+    <p class="hint">You can also drop a PDF anywhere on this page.</p>
+  </section>
+
+  <div id="progress" class="progress" hidden></div>
+  <script type="module" src="viewer.js"></script>
+</body>
+</html>

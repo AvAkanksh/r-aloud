@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>r-aloud</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon-32.png" width="20" height="20" alt="">
+    <h1>r-aloud</h1>
+    <span id="server-dot" class="dot" title="Server status"></span>
+  </header>
+
+  <section class="reader">
+    <div class="actions">
+      <button id="read-page" class="primary">Read page</button>
+      <button id="read-selection">Read selection</button>
+      <button id="open-pdf" class="wide" title="Open a PDF from your computer in the r-aloud reader">Open PDF…</button>
+    </div>
+    <div class="transport" aria-label="Playback">
+      <button data-a="prev" title="Previous sentence" aria-label="Previous sentence">
+        <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg></button>
+      <button data-a="toggle" id="toggle" title="Pause / resume" aria-label="Pause or resume">
+        <svg viewBox="0 0 24 24"><path id="toggle-icon" d="M6 19h4V5H6zm8-14v14h4V5z"/></svg></button>
+      <button data-a="next" title="Next sentence" aria-label="Next sentence">
+        <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6zM16 6v12h2V6z"/></svg></button>
+      <button data-a="stop" title="Stop" aria-label="Stop">
+        <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg></button>
+    </div>
+    <p id="status" class="status" aria-live="polite">Idle</p>
+  </section>
+
+  <section class="settings">
+    <label>Engine
+      <select id="backend"></select>
+    </label>
+    <label>Voice
+      <span class="row">
+        <select id="voice"></select>
+        <button id="test-voice" title="Play a sample" aria-label="Play a sample">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+      </span>
+    </label>
+    <label>Speed <output id="speed-out">1.0×</output>
+      <input id="speed" type="range" min="0.5" max="2" step="0.1" value="1">
+    </label>
+    <details>
+      <summary>Server</summary>
+      <label>URL
+        <input id="server-url" type="url" spellcheck="false">
+      </label>
+      <p id="server-info" class="hint"></p>
+    </details>
+  </section>
+
+  <footer class="hint">Shortcuts: <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> read/pause,
+    <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> stop</footer>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+:root {
+  --bg: #e4e4e7;
+  --bar: #ffffff;
+  --fg: #18181b;
+  --muted: #71717a;
+  --line: #d4d4d8;
+  --accent: #4f46e5;
+  --accent-fg: #ffffff;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #27272a;
+    --bar: #18181b;
+    --fg: #f4f4f5;
+    --muted: #a1a1aa;
+    --line: #3f3f46;
+    --accent: #818cf8;
+    --accent-fg: #18181b;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.4 system-ui, sans-serif; }
+
+.toolbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; background: var(--bar); border-bottom: 1px solid var(--line);
+}
+.title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40vw; }
+.page-info { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.spacer { flex: 1; }
+button, .open-btn {
+  font: inherit; color: inherit; cursor: pointer; white-space: nowrap;
+  padding: 6px 12px; border: 1px solid var(--line); border-radius: 8px; background: transparent;
+}
+button:hover, .open-btn:hover { border-color: var(--muted); }
+button:focus-visible, .open-btn:focus-within { outline: 2px solid var(--accent); outline-offset: 1px; }
+button:disabled { opacity: 0.45; cursor: default; }
+.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); font-weight: 600; }
+.primary-outline { border-color: var(--accent); }
+#zoom-in, #zoom-out { width: 34px; padding: 6px 0; }
+
+#pages { padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.page {
+  position: relative; background: #fff; box-shadow: 0 1px 4px #0003;
+  --scale-round-x: 1px; --scale-round-y: 1px;
+}
+.page canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.notice {
+  max-width: 520px; margin: 12vh auto; padding: 24px; text-align: center;
+  background: var(--bar); border: 1px solid var(--line); border-radius: 12px;
+}
+.notice h2 { margin: 0 0 8px; font-size: 18px; }
+.notice p { margin: 0 0 16px; color: var(--muted); overflow-wrap: anywhere; }
+.notice-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.notice .hint { margin: 16px 0 0; font-size: 12px; }
+body.dragging #pages, body.dragging .notice { outline: 3px dashed var(--accent); outline-offset: -8px; }
+
+.progress {
+  position: fixed; left: 16px; bottom: 16px; padding: 6px 12px; border-radius: 999px;
+  background: #18181bee; color: #f4f4f5; font-size: 12px;
+}
+
+/* pdf.js text layer (from pdfjs-dist/web/pdf_viewer.css, trimmed) */
+.textLayer {
+  color-scheme: only light;
+  position: absolute; text-align: initial; inset: 0; overflow: clip; opacity: 1;
+  line-height: 1; letter-spacing: normal; word-spacing: normal;
+  text-size-adjust: none; forced-color-adjust: none;
+  transform-origin: 0 0; caret-color: CanvasText; z-index: 0;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+.textLayer :is(span, br) {
+  color: transparent; position: absolute; white-space: pre; cursor: text;
+  transform-origin: 0% 0%; user-select: text;
+}
+.textLayer > :not(.markedContent),
+.textLayer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+.textLayer .markedContent { display: contents; }
+.textLayer span[role="img"] { user-select: none; cursor: default; }
+.textLayer ::selection { background: color-mix(in srgb, AccentColor, transparent 50%); color: transparent; }
+.textLayer br::selection { background: transparent; }
+.textLayer .endOfContent {
+  display: block; position: absolute; inset: 100% 0 0; z-index: 0; cursor: default; user-select: none;
+}

@@ -1,0 +1,21 @@
+{
+  "name": "r-aloud-extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs --zip",
+    "test": "node --test test/*.test.mjs",
+    "lint:firefox": "web-ext lint --source-dir dist/firefox",
+    "e2e:chrome": "node test/e2e/chrome.e2e.mjs",
+    "e2e:firefox": "node test/e2e/firefox.e2e.mjs",
+    "e2e:long": "node test/e2e/chrome.e2e.mjs --long && node test/e2e/firefox.e2e.mjs --long"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.2",
+    "pdfjs-dist": "^6.4.299",
+    "playwright": "^1.63.0",
+    "selenium-webdriver": "^4.50.0",
+    "web-ext": "^10.7.0"
+  },
+  "license": "Apache-2.0"
+}

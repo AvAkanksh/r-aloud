@@ -1,0 +1,44 @@
+[project]
+name = "r-aloud-server"
+version = "0.1.0"
+description = "Local open-source TTS server for the r-aloud browser extension"
+license = "Apache-2.0"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn>=0.30",
+  "numpy>=2.0",
+  "kokoro-onnx>=0.4.9",
+]
+
+[project.optional-dependencies]
+# MOSS-TTS-Realtime backend. Needs a clone of https://github.com/OpenMOSS/MOSS-TTS
+# (set MOSS_TTS_DIR) and, realistically, a CUDA GPU with >= 12 GB VRAM.
+moss = [
+  "torch>=2.9",
+  "torchaudio>=2.9",
+  "transformers==5.0.0",
+  "accelerate>=1.10.1",
+  "safetensors",
+  "einops",
+  "librosa",
+  "scipy",
+  "huggingface_hub",
+  "tiktoken",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "httpx>=0.27"]
+
+[project.scripts]
+r-aloud-server = "r_aloud_server.app:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["r_aloud_server"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
