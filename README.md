@@ -50,6 +50,17 @@ over 50 tokens). To clone a voice, drop a short `.wav`/`.mp3` into
 
 ## Install
 
+Quick start (Linux with systemd; needs curl and Node.js ≥ 18, installs `uv` if missing):
+
+```sh
+git clone https://github.com/AvAkanksh/r-aloud && cd r-aloud
+./install.sh                # server + background service + both extensions
+./install.sh --server-only  # just the server (extension installed from a store)
+./install.sh --uninstall
+```
+
+Then load the extension as described in step 2 below. The individual steps:
+
 ### 1. Server
 
 ```sh
