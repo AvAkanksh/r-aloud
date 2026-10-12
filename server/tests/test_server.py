@@ -125,3 +125,20 @@ def test_local_pdf_preflight_blocks_websites(client):
             "Access-Control-Request-Headers": "x-r-aloud"})
     assert preflight("https://evil.example").status_code == 400
     assert preflight("moz-extension://1234-abcd").status_code == 200
+
+
+def test_espeak_data_path_survives_deep_install_dirs(tmp_path, monkeypatch):
+    # espeak-ng silently ignores data paths longer than its 160-byte buffer.
+    import shutil
+
+    import espeakng_loader
+    from r_aloud_server.backends import kokoro
+
+    deep = tmp_path / ("nested-" * 30) / "espeak-ng-data"
+    shutil.copytree(espeakng_loader.get_data_path(), deep)
+    monkeypatch.setattr(espeakng_loader, "get_data_path", lambda: str(deep))
+    monkeypatch.setattr(kokoro, "DATA_DIR", tmp_path / "short")
+    path = kokoro._espeak_data_path()
+    assert len(path) <= kokoro.ESPEAK_PATH_MAX
+    assert (tmp_path / "short" / "espeak-ng-data" / "phontab").is_file()
+    assert kokoro._espeak_data_path() == path  # reused, not recopied

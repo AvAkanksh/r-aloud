@@ -67,6 +67,33 @@ def split_for_streaming(text: str) -> list[tuple[str, float]]:
     return out
 
 
+# espeak-ng copies its data path into a fixed 160-byte buffer and silently
+# falls back to a bogus built-in path when it is longer (a virtualenv in a
+# deeply nested directory). It also rejects a symlinked data directory, so a
+# long path is served from a short real copy (~19 MB) instead.
+ESPEAK_PATH_MAX = 150
+
+
+def _espeak_data_path() -> str:
+    import shutil
+
+    import espeakng_loader
+
+    real = str(espeakng_loader.get_data_path())
+    if len(real) <= ESPEAK_PATH_MAX:
+        return real
+    copy = DATA_DIR / "espeak-ng-data"
+    if len(str(copy)) > ESPEAK_PATH_MAX:
+        copy = Path("/tmp") / f"r-aloud-{os.getuid()}" / "espeak-ng-data"
+    marker = copy / ".source"
+    stamp = f"{real}\n{os.stat(Path(real) / 'phontab').st_mtime_ns}"
+    if not (marker.is_file() and marker.read_text() == stamp):
+        shutil.rmtree(copy, ignore_errors=True)
+        shutil.copytree(real, copy)
+        marker.write_text(stamp)
+    return str(copy)
+
+
 def _lang_for(voice: str) -> str:
     return LANGS.get(voice[:1], LANGS["a"])[0]
 
@@ -109,9 +136,12 @@ class KokoroBackend(Backend):
             ok, reason = self.availability()
             if not ok:
                 raise RuntimeError(reason)
-            from kokoro_onnx import Kokoro
+            from kokoro_onnx import EspeakConfig, Kokoro
 
-            self._kokoro = Kokoro(str(self.model_path), str(self.voices_path))
+            self._kokoro = Kokoro(
+                str(self.model_path), str(self.voices_path),
+                espeak_config=EspeakConfig(data_path=_espeak_data_path()),
+            )
 
     def voices(self) -> list[Voice]:
         self.load()
